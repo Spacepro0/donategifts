@@ -50,6 +50,9 @@ window.WishCardManage = WishCardManage;
 import WishCardDonate from './pages/wishcard/donate.jsx';
 window.WishCardDonate = WishCardDonate;
 
+import WishCardSingle from './pages/wishcard/single.jsx';
+window.WishCardSingle = WishCardSingle;
+
 import WishcardsAdministration from './pages/admin/routes/wishcard/administration.jsx';
 window.WishcardsAdministration = WishcardsAdministration;
 
