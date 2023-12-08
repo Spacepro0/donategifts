@@ -23,6 +23,7 @@ export default function WishCardSingle({ user }) {
 	const [toastMessage, setToastMessage] = useState('');
 	const [toastType, setToastType] = useState('');
 	const [showToast, setShowToast] = useState(false);
+	const [donorId, setDonorId] = useState('');
 
 	const addNewMessage = useCallback((newMessage) => {
 		setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -32,7 +33,12 @@ export default function WishCardSingle({ user }) {
 		setIsLoading(true);
 		try {
 			const response = await axios.get(`/api/wishcards/single/${id}`);
-			const { wishcard, agency, messages, defaultMessages } = response.data.data;
+			const { wishcard, agency, messages, defaultMessages, donationFrom } =
+				response.data.data;
+
+			if (donationFrom && donationFrom.length) {
+				setDonorId(donationFrom);
+			}
 			setWishcard(wishcard);
 			setAgency(agency);
 			setMessages(messages);
@@ -59,6 +65,7 @@ export default function WishCardSingle({ user }) {
 			</MantineProviderWrapper>
 		);
 	}
+
 	return (
 		<MantineProviderWrapper>
 			<div className="single">
@@ -95,23 +102,38 @@ export default function WishCardSingle({ user }) {
 									wishItemName={wishcard.wishItemName}
 									wishItemImage={wishcard.wishItemImage}
 									wishItemPrice={wishcard.wishItemPrice}
+									wishItemInfo={wishcard.wishItemInfo}
 								/>
-								{user && Object.keys(user).length > 0 && (
+								{user && Object.keys(user).length > 0 ? (
 									<MessageForm
 										defaultMessages={defaultMessages}
 										wishcard={wishcard}
 										user={user}
 										onMessageSend={addNewMessage}
+										donorId={donorId}
 									/>
+								) : (
+									<div className="col-md-6 col-lg-6 col-12">
+										<div className="d-flex flex-column justify-content-center">
+											<div className="display-6 my-4">Send Message</div>
+											<p>
+												Please log in to access the message sending feature.
+											</p>
+										</div>
+									</div>
 								)}
 							</div>
 						</div>
 						<MessageBoard childName={wishcard.childFirstName} messages={messages} />
 					</div>
 				</div>
-				{showToast && (
-					<CustomToast message={toastMessage} type={toastType} delayCloseForSeconds={5} />
-				)}
+				<CustomToast
+					message={toastMessage}
+					type={toastType}
+					delayCloseForSeconds={5}
+					isVisible={showToast}
+					setIsVisible={setShowToast}
+				/>
 			</div>
 		</MantineProviderWrapper>
 	);

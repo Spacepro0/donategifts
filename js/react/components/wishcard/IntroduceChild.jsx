@@ -4,7 +4,7 @@ import React from 'react';
 
 const IntroduceChild = ({ childId, childName, image, user, status }) => {
 	const isDonated = status === 'donated';
-	const buttonHref = user?._id ? `/wishcards/donate/${childId}` : '/login';
+	const buttonHref = user?._id ? `/wishcards/donate/${childId}` : `/login?redirect=${childId}`;
 	const buttonColor = isDonated ? '#6c757d' : '#ff826b';
 
 	return (
@@ -16,17 +16,17 @@ const IntroduceChild = ({ childId, childName, image, user, status }) => {
 					alt={image.alt}
 					loading="lazy"
 				/>
-				<h1 className="cool-font text-primary my-3">Hi, I am {childName}!</h1>
+				<h1 className="heading-primary my-3">Hi, I am {childName}!</h1>
 				<Button
 					radius="md"
 					className="w-sm-100"
 					color={buttonColor}
-					size="md"
+					size="xl"
 					component="a"
 					href={buttonHref}
 					disabled={isDonated}
 				>
-					{isDonated ? 'Donated' : 'Donate Gift'}
+					{isDonated ? 'Gift Donated' : 'Donate Gift'}
 				</Button>
 			</div>
 		</div>
