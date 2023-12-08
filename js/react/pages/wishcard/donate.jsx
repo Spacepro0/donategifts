@@ -4,9 +4,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
 
+import { StripeCheckout, PayPalCheckout } from '../../components/wishcard/PaymentProviders.jsx';
 import MantineProviderWrapper from '../../utils/mantineProviderWrapper.jsx';
-
-import { StripeCheckout, PayPalCheckout } from './paymentProviders.jsx';
 
 let stripePromise;
 
@@ -66,98 +65,116 @@ function WishCardDonate({ wishcard, agency, user, extendedPaymentInfo, stripeKey
 					</p>
 					<div className="row">
 						<div className="col-md-6 mt-5">
-							<div className="card">
-								<div className="card-header">
-									<span>From this donation, you will receive:</span>
-									<div className="mt-1">
-										<div className="center-elements justify-content-start">
-											<div className="fa fa-heart text-secondary"></div>
-											<div className="ms-1">
-												Tax-deductible receipt with shipping details
-											</div>
+							<div className="card p-4">
+								<div className="row">
+									<p>
+										We directly deliver wish items to our nonprofit partner
+										agencies for children and youth. Our partners then collect
+										and distribute the gifts. With no need for a drop-off site,
+										we handle shipping to ensure an easy and efficient donation
+										experience. Delivery notifications will follow your
+										donation.
+									</p>
+								</div>
+								<hr />
+								<span>From this donation, you will receive:</span>
+								<div className="mx-2">
+									<div className="center-elements justify-content-start">
+										<div className="fa fa-heart text-secondary" />
+										<div className="ms-1">
+											Tax-deductible receipt with shipping details
 										</div>
-										<div className="center-elements justify-content-start">
-											<div className="fa fa-heart text-secondary"></div>
-											<div className="ms-1">
-												Notification with a delivery proof
-											</div>
+									</div>
+									<div className="center-elements justify-content-start">
+										<div className="fa fa-heart text-secondary" />
+										<div className="ms-1">
+											Notification with a delivery proof
 										</div>
-										<div className="center-elements justify-content-start">
-											<div className="fa fa-heart text-secondary"></div>
-											<div className="ms-1">
-												Message &amp; photo from{' '}
-												<span className="fw-bold">
-													{wishcard.childFirstName}
-												</span>{' '}
-												if partner agency permits
-											</div>
+									</div>
+									<div className="center-elements justify-content-start">
+										<div className="fa fa-heart text-secondary" />
+										<div className="ms-1">
+											Message &amp; photo from{' '}
+											<span className="fw-bold">
+												{wishcard.childFirstName}
+											</span>{' '}
+											if partner agency permits
 										</div>
 									</div>
 								</div>
-								<div className="card-body">
-									<div className="col-6 mx-auto">
+								<div className="row mt-3">
+									<div className="col-6">
 										<img
-											className="img-fluid rounded-3"
-											alt="wish card kid photo"
-											src={wishcard.wishCardImage || wishcard.childImage}
+											className="img-fluid rounded-2"
+											alt="wish card child image"
+											src="wishcard.wishCardImage || wishcard.childImage"
 										/>
 									</div>
-									<div className="py-3">Wish item: {wishcard.wishItemNam}e</div>
-									<div className="d-flex justify-content-between">
-										<span>Subtotal</span>
-										<span>${wishcard.wishItemPrice}.00</span>
+									<div className="col-6">
+										<img
+											className="img-fluid rounded-2"
+											alt="wish card item image"
+											src=" wishcard.wishItemImage || wishItemImg"
+										/>
 									</div>
-									<div className="d-flex justify-content-between">
-										<span>Shipping</span>
-										<span className="fw-bold">
-											{extendedPaymentInfo.shipping}
-										</span>
-									</div>
-									<div className="d-flex justify-content-between">
-										<span>
-											<span>Processing fee</span>
-											<a
-												className="text-success"
-												href="#"
-												data-bs-toggle="modal"
-												data-bs-target="#checkoutHelper2"
-											>
-												<div className="fa fa-question-circle ms-1"></div>
-											</a>
-										</span>
-										<span>${extendedPaymentInfo.processingFee}</span>
-									</div>
-									<div className="d-flex justify-content-between">
-										<span>
-											Item sales tax
-											<a
-												className="text-success"
-												href="#"
-												data-bs-toggle="modal"
-												data-bs-target="#checkoutHelper3"
-											>
-												<div className="fa fa-question-circle ms-1"></div>
-											</a>
-										</span>
-										<span>${extendedPaymentInfo.tax}</span>
-									</div>
-									<div
-										className="d-flex justify-content-between"
-										id="user-donation-div"
-									>
-										<span>Cash donation</span>
-										<span id="user-donation">${additionalDonation}</span>
-									</div>
-									<hr />
-									<div className="d-flex justify-content-between fw-bold">
-										<span>Total</span>
-										<span className="text-success" id="total-cost">
-											${totalCost}
-										</span>
-									</div>
+								</div>
+								<p className="pt-3">
+									<span>Item Name:</span>
+									<span className="fw-semi-bold"> ${wishcard.wishItemName}</span>
+								</p>
+								<div className="d-flex justify-content-between">
+									<span>Item Price</span>
+									<span> ${wishcard.wishItemPrice}</span>
+								</div>
+								<div className="d-flex justify-content-between">
+									<span>Shipping</span>
+									<span className="fw-bold">{extendedPaymentInfo.shipping}</span>
+								</div>
+								<div className="d-flex justify-content-between">
+									<span>
+										<span>Processing fee</span>
+										<a
+											className="text-success"
+											href="#"
+											data-bs-toggle="modal"
+											data-bs-target="#checkoutHelper2"
+										>
+											<div className="fa fa-question-circle ms-1" />
+										</a>
+									</span>
+									<span>${extendedPaymentInfo.processingFee}</span>
+								</div>
+								<div className="d-flex justify-content-between">
+									<span>
+										Item sales tax
+										<a
+											className="text-success"
+											href="#"
+											data-bs-toggle="modal"
+											data-bs-target="#checkoutHelper3"
+										>
+											<div className="fa fa-question-circle ms-1" />
+										</a>
+									</span>
+									<span>${extendedPaymentInfo.tax}</span>
+								</div>
+								<div
+									className="d-flex justify-content-between"
+									id="user-donation-div"
+								>
+									<span>Cash donation</span>
+									<span id="user-donation">${additionalDonation}</span>
+								</div>
+								<hr />
+								<div className="d-flex justify-content-between fw-bold">
+									<span>Total</span>
+									<span className="text-secondary" id="total-cost">
+										${totalCost}
+									</span>
 								</div>
 							</div>
 						</div>
+
 						<div className="col-md-6 mt-5">
 							<div className="card">
 								<div className="card-body">
